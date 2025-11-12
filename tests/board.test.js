@@ -16,7 +16,12 @@ function assertEquals(actual, expected, message) {
 }
 
 // Import functions to test
-import { getLastThreePoints, addPoint } from '../src/board.js';
+import { 
+    getLastThreePoints, 
+    shouldDrawTriangle,
+    eventToCanvasCoords,
+    getTriangleCount 
+} from '../src/utils.js';
 
 console.log('\n🧪 Running tests for Triangle Drawer...\n');
 
@@ -99,13 +104,35 @@ try {
 
 // Test 8: Triangle calculation - verify modulo logic
 try {
-    const pointsCount = 7;
-    const shouldDrawTriangle = pointsCount % 3 === 0;
-    assert(!shouldDrawTriangle, 'No triangle drawn when points count is not divisible by 3');
-    
-    const pointsCount2 = 9;
-    const shouldDrawTriangle2 = pointsCount2 % 3 === 0;
-    assert(shouldDrawTriangle2, 'Triangle drawn when points count is divisible by 3');
+    assert(!shouldDrawTriangle(0), 'No triangle drawn when points count is 0');
+    assert(!shouldDrawTriangle(1), 'No triangle drawn when points count is 1');
+    assert(!shouldDrawTriangle(2), 'No triangle drawn when points count is 2');
+    assert(shouldDrawTriangle(3), 'Triangle drawn when points count is 3');
+    assert(!shouldDrawTriangle(4), 'No triangle drawn when points count is 4');
+    assert(!shouldDrawTriangle(5), 'No triangle drawn when points count is 5');
+    assert(shouldDrawTriangle(6), 'Triangle drawn when points count is 6');
+    assert(shouldDrawTriangle(9), 'Triangle drawn when points count is 9');
+} catch (error) {
+    console.error(error.message);
+}
+
+// Test 9: Triangle count calculation
+try {
+    assertEquals(getTriangleCount([]), 0, 'Triangle count is 0 for empty array');
+    assertEquals(getTriangleCount([{x:1,y:1}]), 0, 'Triangle count is 0 for 1 point');
+    assertEquals(getTriangleCount([{x:1,y:1},{x:2,y:2},{x:3,y:3}]), 1, 'Triangle count is 1 for 3 points');
+    assertEquals(getTriangleCount(new Array(6).fill({x:1,y:1})), 2, 'Triangle count is 2 for 6 points');
+    assertEquals(getTriangleCount(new Array(7).fill({x:1,y:1})), 2, 'Triangle count is 2 for 7 points');
+} catch (error) {
+    console.error(error.message);
+}
+
+// Test 10: Event to canvas coordinates conversion
+try {
+    const event = { clientX: 150, clientY: 200 };
+    const rect = { left: 50, top: 100 };
+    const coords = eventToCanvasCoords(event, rect);
+    assertEquals(coords, {x: 100, y: 100}, 'Correctly converts event to canvas coordinates');
 } catch (error) {
     console.error(error.message);
 }

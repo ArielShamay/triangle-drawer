@@ -1,4 +1,5 @@
 import { drawPoint, drawTriangle, clearCanvas, initCanvas } from './renderer.js';
+import { getLastThreePoints, shouldDrawTriangle, getTriangleCount } from './utils.js';
 
 // State management
 let points = [];
@@ -52,7 +53,7 @@ export function addPoint(x, y) {
     drawPoint(canvas, point);
     
     // Check if we should draw a triangle
-    if (points.length % 3 === 0 && points.length >= 3) {
+    if (shouldDrawTriangle(points.length)) {
         const trianglePoints = getLastThreePoints(points);
         if (trianglePoints) {
             drawTriangle(canvas, trianglePoints);
@@ -67,13 +68,9 @@ export function addPoint(x, y) {
  * Get the last three points from the points array
  * @param {Array<{x: number, y: number}>} pointsArray - Array of points
  * @returns {Array<{x: number, y: number}>|null} Last three points or null
+ * @deprecated Use the version from utils.js instead
  */
-export function getLastThreePoints(pointsArray) {
-    if (!pointsArray || pointsArray.length < 3) {
-        return null;
-    }
-    return pointsArray.slice(-3);
-}
+export { getLastThreePoints } from './utils.js';
 
 /**
  * Clear the entire board
@@ -142,7 +139,7 @@ function handleResize() {
  * Update UI counters
  */
 function updateUI() {
-    const triangleCount = Math.floor(points.length / 3);
+    const triangleCount = getTriangleCount(points);
     pointCountEl.textContent = `נקודות: ${points.length}`;
     triangleCountEl.textContent = `משולשים: ${triangleCount}`;
 }
