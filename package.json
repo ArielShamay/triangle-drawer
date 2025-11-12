@@ -1,0 +1,19 @@
+{
+  "name": "triangle-drawer",
+  "version": "1.0.0",
+  "description": "אפליקציית web לציור משולשים על בסיס נקודות שנלחצות על canvas",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo \"פתח את index.html בדפדפן או השתמש ב-Live Server של VSCode\"",
+    "test": "node tests/board.test.js"
+  },
+  "keywords": [
+    "canvas",
+    "drawing",
+    "triangle",
+    "javascript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "module"
+}
